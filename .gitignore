@@ -1,0 +1,19 @@
+.settings/
+.classpath
+.project
+*.class
+analyzed.js
+.DS_Store
+.idea
+META-INF
+build
+output
+test.*
+apk-dependency-graph-scripts-*.zip
+.ant
+.gradle
+# lib/ directory where the dependencies are downloaded by Ivy Apache.
+lib
+filters/*.json
+!filters/default.json
+.vscode
