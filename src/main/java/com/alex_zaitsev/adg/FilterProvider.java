@@ -15,8 +15,8 @@ public class FilterProvider {
     }
 
     /**
-     * include filter
-     * @return RegexFilter filter
+     *
+     * @return RegexFilter include filter
      */
     public Filter<String> makePathFilter() {
         String replacement = Matcher.quoteReplacement(File.separator);
@@ -30,16 +30,16 @@ public class FilterProvider {
     }
 
     /**
-     * for filtering full class names and package names
-     * @return RegexFilter filter
+     * for filtering full class names or package names
+     * @return RegexFilter include filter
      */
     public Filter<String> makeClassPathFilter() {
         return new RegexFilter(".*" + inputFilters.getPackageRange() + ".*");
     }
 
     /**
-     * exclude filter
-     * @return InverseRegexFilter filter, the opposite of RegexFilter.
+     *
+     * @return InverseRegexFilter exclude filter, the opposite of RegexFilter.
      */
     public Filter<String> makeIgnoredFilter() {
 

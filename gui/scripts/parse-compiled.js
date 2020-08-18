@@ -6,6 +6,8 @@
 // Output:
 "use strict";
 
+var level = 2; // TODO how to pass this para by user
+
 var objcdv = {
     version: "0.0.1",
     _createGraph: function _createGraph() {
@@ -136,7 +138,8 @@ var objcdv = {
             addName: function addName(name) {
                 this._sortedPrefixes = null;
 
-                var prefix = name.substring(0, 2);  // FIXME how to split up the name to color the package nodes
+//                var prefix = name.substring(0, 2);
+                var prefix = this._getPrefixName(name, level);
                 if (!(prefix in this._prefixesDistr)) {
                     this._prefixesDistr[prefix] = 1;
                 } else {
@@ -146,7 +149,8 @@ var objcdv = {
 
             prefixIndexForName: function prefixIndexForName(name) {
                 var sortedPrefixes = this._getSortedPrefixes();
-                var prefix = name.substring(0, 2);
+//                var prefix = name.substring(0, 2);
+                var prefix = this._getPrefixName(name, level);
                 return _.indexOf(sortedPrefixes, prefix);
             },
 
@@ -161,6 +165,45 @@ var objcdv = {
                     });
                 }
                 return this._sortedPrefixes;
+            },
+
+            _getPrefixName: function _getPrefixName(name, level) {
+
+                level = level < 1 ? 1 : level;
+
+                /* NOTE Grouping from right to left */
+//                var endIndex = 0;
+//                while (endIndex != -1 && level > 0) {
+//                    endIndex = name.indexOf("/", endIndex + 1);
+//                    level--;
+//                }
+//                return endIndex == -1 ? name : name.substring(0, endIndex);
+
+                /* NOTE Select the only level-th element, counted from right to left, as the grouping condition */
+                var str = name;
+                var fromIndex = 0;
+                while (level > 0) {
+                    fromIndex = str.lastIndexOf("/")
+                    if (fromIndex == -1) {
+                        break;
+                    }
+                    str = str.substring(0, fromIndex);
+                    level--;
+                }
+                return name.substring(fromIndex + 1, name.indexOf("/", fromIndex + 1));
+
+                /* NOTE Grouping from right to left */
+//                var prefix = name;
+//                var lastIndex = 0;
+//                for (let i = 0; i < level; i++) {
+//                    lastIndex = prefix.lastIndexOf("/");
+//                    if (lastIndex == -1) {
+//                        break;
+//                    }
+//                    prefix = prefix.substring(0, lastIndex);
+//                }
+//                prefix = name.substring(lastIndex + 1, name.length - 1);
+//                return prefix;
             }
         };
     },

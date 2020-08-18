@@ -71,8 +71,7 @@ public class SmaliAnalyzer {
 	private void traverseSmaliCodeDir(@NotNull File dir) {
 		File[] listOfFiles = dir.listFiles();
 		assert listOfFiles != null;
-		for (int i = 0; i < listOfFiles.length; i++) {
-			File currentFile = listOfFiles[i];
+		for (File currentFile : listOfFiles) {
 			if (isSmaliFile(currentFile)) {
 				if (isPathFilterOk(currentFile)) { // IMP: exclude files that is outside the range
 					processSmaliFile(currentFile);
@@ -118,7 +117,7 @@ public class SmaliAnalyzer {
 			String fileName = file.getName().substring(0, file.getName().lastIndexOf("."));
 
 			// get the first line, starts with .class, denotes the class name and the package it belongs to.
-			String packageName = getPackage(true, filters.getScale(), br.readLine());
+			String keyPackage = getPackage(true, filters.getScale(), br.readLine());
 
 			// Anonymous class: Java can just new an interface,
 			// and insert the implementation code into the block behind the new,
@@ -156,10 +155,10 @@ public class SmaliAnalyzer {
 							}
 						} else {
 							/* NOTE For package filtering */
-							String dependencyPackageName = getPackage(false, filters.getScale(), fullClassName);
-							if (isIgnoredFilterOk(dependencyPackageName) && isClassOk(getClassSimpleName(fullClassName), fileName)
-									&& isClassPathFilterOk(dependencyPackageName)) {
-								dependencyNames.add(dependencyPackageName);
+							String dependencyPackage = getPackage(false, filters.getScale(), fullClassName);
+							if (isIgnoredFilterOk(dependencyPackage) && isClassOk(getClassSimpleName(fullClassName), fileName)
+									&& isClassPathFilterOk(dependencyPackage)) {
+								dependencyNames.add(dependencyPackage);
 							}
 						}
 					}
@@ -177,7 +176,7 @@ public class SmaliAnalyzer {
 				if (filters.getFilterByClass()) {
 					addDependencies(fileName, dependencyNames);
 				} else {
-					addDependencies(packageName, dependencyNames);
+					addDependencies(keyPackage, dependencyNames);
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -219,7 +218,7 @@ public class SmaliAnalyzer {
 					index = line.indexOf("L", colonIndex);
 				}
 			} else {
-				index = line.indexOf("L", index+1);
+				index = line.indexOf("L", index + 1);
 				continue;
 			}
 

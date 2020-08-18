@@ -88,22 +88,28 @@ public class CodeUtils {
 
 	@NotNull
 	public static String getPackage(boolean raw, int scale, @NotNull String classLine) {
-		String packageName;
-		if (raw) {
-			packageName = classLine.substring(classLine.indexOf('L') + 1);
-		} else {
-			int endIndex = classLine.lastIndexOf("/");
-			packageName = endIndex == -1 ? classLine : classLine.substring(0, endIndex);
-		}
-		StringBuilder outerPackageName = new StringBuilder();
-		int fromIndex = 0;
-		int endIndex = packageName.indexOf('/', fromIndex) + 1;
-		while (fromIndex < endIndex && scale > 0) {
-			outerPackageName.append(packageName, fromIndex, endIndex);
-			fromIndex = endIndex;
-			endIndex = packageName.indexOf('/', fromIndex) + 1;
+		int beginIndex = raw ? classLine.indexOf('L') + 1 : 0;
+		String packageName = classLine.substring(beginIndex, classLine.lastIndexOf('/') + 1);
+
+		// NOTE from left to right
+		int endIndex = 0;
+		int theLastIndex = packageName.length() - 1;
+		while (endIndex < theLastIndex && scale > 0) {
+			endIndex = packageName.indexOf('/', endIndex + 1);
 			scale--;
 		}
-		return outerPackageName.toString();
+		return packageName.substring(0, endIndex);
+
+		// NOTE from right to left
+//		String scaledPackageName = packageName;
+//		int lastIndex = 0;
+//		for (int i = 0; i < scale; i++) {
+//			lastIndex = scaledPackageName.lastIndexOf('/');
+//			if (lastIndex == -1){
+//				break;
+//			}
+//			scaledPackageName = scaledPackageName.substring(0, lastIndex);
+//		}
+//		return packageName.substring(lastIndex + 1);
 	}
 }

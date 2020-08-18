@@ -1,7 +1,7 @@
 {
     "filter-by-class": false,
-    "package-scale": 4,
-    "package-range": "com/huawei/android",
+    "package-scale": 50,
+    "package-range": "com/huawei",
     "package-name": "",
     "show-inner-objects": false,
     "ignored-objects": ["java.*", "javax.*", ".*Dagger.*", ".*Inject.*", ".*ViewBinding$", ".*Factory$", ".*_.*", "^R$", "^R\\$.*"]
