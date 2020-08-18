@@ -11,6 +11,7 @@ public class AndFilter<T> extends Filter<T> {
 
     private List<Filter<T>> filters;
 
+    @SafeVarargs
     public AndFilter(Filter<T>... filters) {
         this.filters = new ArrayList<>(Arrays.asList(filters));
     }

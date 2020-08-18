@@ -23,7 +23,11 @@ clean {
 	delete = ['build']
 }
 dependencies {
-	implementation 'org.smali:baksmali:2.2.5'      // runtime dependency
-	testImplementation 'org.hamcrest:hamcrest:2.1' // test dependency
-	testImplementation 'junit:junit:4.12'          // test dependency
+	implementation files('libs/baksmali-2.2.5.jar')
+	testCompileOnly files('libs/hamcrest-2.1.jar')
+	testCompileOnly files('libs/junit-4.12.jar')
+	implementation files('libs/dexlib2-2.2.5.jar')
+	implementation files('libs/guava-18.0.jar')
+	implementation files('libs/util-2.2.5.jar')
+	implementation files('libs/annotations-15.0.jar')
 }

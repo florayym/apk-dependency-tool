@@ -14,24 +14,45 @@ public class FilterProvider {
         this.inputFilters = inputFilters;
     }
 
+    /**
+     * include filter
+     * @return RegexFilter filter
+     */
     public Filter<String> makePathFilter() {
         String replacement = Matcher.quoteReplacement(File.separator);
 	    replacement = Matcher.quoteReplacement(replacement);
-        String packageNameAsPath = inputFilters.getPackageName().replaceAll("\\.", replacement);
-        String packageNameRegex = ".*" + packageNameAsPath + ".*";
-        RegexFilter filter = new RegexFilter(packageNameRegex);
-        
-        return filter;
+        // file/path/on/windows/looks/like/this
+        // Reference: https://github.com/alexzaitsev/apk-dependency-graph/issues/60#issuecomment-565487508
+        String packageRangeAsPath = inputFilters.getPackageRange().replaceAll("/", replacement); // Regex for Unix: \\.
+        String packageRangeRegex = ".*" + packageRangeAsPath + ".*";
+
+        return new RegexFilter(packageRangeRegex);
     }
 
-    public Filter<String> makeClassFilter() {
-        String[] ignoredClasses = inputFilters.getIgnoredClasses();
-        if (ignoredClasses == null) {
+    /**
+     * for filtering full class names and package names
+     * @return RegexFilter filter
+     */
+    public Filter<String> makeClassPathFilter() {
+        return new RegexFilter(".*" + inputFilters.getPackageRange() + ".*");
+    }
+
+    /**
+     * exclude filter
+     * @return InverseRegexFilter filter, the opposite of RegexFilter.
+     */
+    public Filter<String> makeIgnoredFilter() {
+
+        // when being filtered by package and nothing will be ignored
+//        if (!inputFilters.getFilterByClass()) {
+//            return null;
+//        }
+
+        String[] ignoredObjects = inputFilters.getIgnoredObjects();
+        if (ignoredObjects == null) {
             return null;
         }
 
-        InverseRegexFilter ignoredClassesFilter = new InverseRegexFilter(ignoredClasses);
-
-        return ignoredClassesFilter;
+        return new InverseRegexFilter(ignoredObjects);
     }
 }

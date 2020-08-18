@@ -22,7 +22,7 @@ public class FilterProviderTests {
     public void setUp() throws IOException {
         String packageName = "com.example.package";
         String[] ignoredClasses = new String[] {".*Dagger.*", ".*Injector.*", ".*\\$_ViewBinding$", ".*_Factory$"};
-        defaultFilters = new Filters(packageName, Filters.DEFAULT_PROCESS_INNER, ignoredClasses);
+        defaultFilters = new Filters(true, packageName, Filters.DEFAULT_PROCESS_INNER, ignoredClasses); // FIXME two types of constructor functions
     }
 
     /**
@@ -67,10 +67,10 @@ public class FilterProviderTests {
      */
     @Test
     public void makeClassFilterReturnsNullIfIgnoredClassesAreNull() {
-        defaultFilters.setIgnoredClasses(null);
+        defaultFilters.setIgnoredObjects(null);
         FilterProvider sut = new FilterProvider(defaultFilters);
 
-        Filter<String> filter = sut.makeClassFilter();
+        Filter<String> filter = sut.makeIgnoredFilter();
         
         assertThat(filter, nullValue());
     }
@@ -82,7 +82,7 @@ public class FilterProviderTests {
     @Test
     public void makeClassFilterReturnsExpectedFilter() {
         FilterProvider sut = new FilterProvider(defaultFilters);
-        Filter<String> filter = sut.makeClassFilter();
+        Filter<String> filter = sut.makeIgnoredFilter();
 
         assertThat(filter, notNullValue());
         String inverseRegexFilter = "InverseRegexFilter{.*Dagger.*|.*Injector.*|.*\\$_ViewBinding$|.*_Factory$}";
@@ -96,7 +96,7 @@ public class FilterProviderTests {
     @Test
     public void makeClassFilterReturnsFilterThatFiltersAsExpected() {
         FilterProvider sut = new FilterProvider(defaultFilters);
-        Filter<String> filter = sut.makeClassFilter();
+        Filter<String> filter = sut.makeIgnoredFilter();
 
         assertThat(filter, notNullValue());
 

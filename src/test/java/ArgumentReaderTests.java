@@ -107,7 +107,7 @@ public class ArgumentReaderTests {
 
         assertThat(args, notNullValue());
         assertThat(args.getFiltersPath(), nullValue());
-        assertThat(args.getProjectPath(), equalTo(projectPath));
+        assertThat(args.getDecompiledProjectPath(), equalTo(projectPath));
         assertThat(args.getResultPath(), equalTo(resultPath));
         assertThat(args.getApkFilePath(), equalTo(apkPath));
     }
@@ -129,7 +129,7 @@ public class ArgumentReaderTests {
         Arguments args = sut.read();
 
         assertThat(args, notNullValue());
-        assertThat(args.getProjectPath(), equalTo(projectPath));
+        assertThat(args.getDecompiledProjectPath(), equalTo(projectPath));
         assertThat(args.getResultPath(), equalTo(resultPath));
         assertThat(args.getApkFilePath(), equalTo(apkPath));
         assertThat(args.getFiltersPath(), equalTo(filtersPath));

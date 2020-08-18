@@ -3,31 +3,14 @@ package com.alex_zaitsev.adg.io;
 public class Arguments {
     
     private String apkFilePath;
-    private String projectPath;
+    private String decompiledProjectPath;
     private String resultPath;
     private String filtersPath;
 
-    public Arguments(String apkPath, String projectPath, String resultPath,
-            String filtersPath) {
+    public Arguments(String apkPath, String decompiledProjectPath, String filtersPath, String resultPath) {
         this.apkFilePath = apkPath;
-        this.projectPath = projectPath;
-        this.resultPath = resultPath;
+        this.decompiledProjectPath = decompiledProjectPath;
         this.filtersPath = filtersPath;
-    }
-
-    public String getProjectPath() {
-        return projectPath;
-    }
-
-    public void setProjectPath(String projectPath) {
-        this.projectPath = projectPath;
-    }
-
-    public String getResultPath() {
-        return resultPath;
-    }
-
-    public void setResultPath(String resultPath) {
         this.resultPath = resultPath;
     }
 
@@ -39,11 +22,27 @@ public class Arguments {
         this.apkFilePath = apkFilePath;
     }
 
+    public String getDecompiledProjectPath() {
+        return decompiledProjectPath;
+    }
+
+    public void setDecompiledProjectPath(String decompiledProjectPath) {
+        this.decompiledProjectPath = decompiledProjectPath;
+    }
+
     public String getFiltersPath() {
         return filtersPath;
     }
 
     public void setFiltersPath(String filtersPath) {
         this.filtersPath = filtersPath;
+    }
+
+    public String getResultPath() {
+        return resultPath;
+    }
+
+    public void setResultPath(String resultPath) {
+        this.resultPath = resultPath;
     }
 }

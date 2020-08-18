@@ -136,7 +136,7 @@ var objcdv = {
             addName: function addName(name) {
                 this._sortedPrefixes = null;
 
-                var prefix = name.substring(0, 2);
+                var prefix = name.substring(0, 2);  // FIXME how to split up the name to color the package nodes
                 if (!(prefix in this._prefixesDistr)) {
                     this._prefixesDistr[prefix] = 1;
                 } else {

@@ -4,17 +4,17 @@ import java.io.File;
 
 public class ArgumentReader {
 
-	private static final String ARG_PROJ = "-i";
-	private static final String ARG_RES_JS = "-o";
-	private static final String ARG_APK = "-a";
+	private static final String ARG_APK = "-i";
+	private static final String ARG_PROJ = "-d";
 	private static final String ARG_FILTER = "-f";
+	private static final String ARG_RES_JS = "-o";
 
 	private static final String USAGE_STRING = "Usage:\n" +
+			ARG_APK + " path : path to the apk file awaiting analysis\n" +
 			ARG_PROJ + " path : path to the decompiled project\n" +
-			ARG_RES_JS + " path : path to the result js file\n" +
-			ARG_APK + " path : path to the apk file\n" +
-			ARG_FILTER + " filters : path to the your_filterset.json file";
-	
+			ARG_FILTER + " filters : path to the your filter.json file\n" +
+			ARG_RES_JS + " path : path to the analyzed.js file";
+
 	private String[] args;
 	
 	public ArgumentReader(String[] args) {
@@ -22,23 +22,23 @@ public class ArgumentReader {
 	}
 
 	public Arguments read() {
-		String projectPath = null, resultPath = null, apkPath = null, filtersPath = null;
+		String apkPath = null, decompiledProjectPath = null, filtersPath = null, resultPath = null;
 
 		for (int i = 0; i < args.length; i++) {
 			if (i < args.length - 1) {
-				if (args[i].equals(ARG_PROJ)) {
-					projectPath = args[i + 1];
-				} else if (args[i].equals(ARG_RES_JS)) {
-					resultPath = args[i + 1];
-				} else if (args[i].equals(ARG_APK)) {
+				if (args[i].equals(ARG_APK)) {
                     apkPath = args[i + 1];
-                } else if (args[i].equals(ARG_FILTER)) {
+				} else if (args[i].equals(ARG_PROJ)) {
+					decompiledProjectPath = args[i + 1];
+				} else if (args[i].equals(ARG_FILTER)) {
 					filtersPath = args[i + 1];
+                } else if (args[i].equals(ARG_RES_JS)) {
+					resultPath = args[i + 1];
 				}
 			}
 		}
-		if (projectPath == null || resultPath == null || apkPath == null) {
-			System.err.println(ARG_PROJ + ", " + ARG_RES_JS + " and " + ARG_APK + " must be provided!");
+		if (apkPath == null || decompiledProjectPath == null || resultPath == null) {
+			System.err.println(ARG_APK + ", " + ARG_PROJ + " and " + ARG_RES_JS + " must be provided!");
 			System.err.println(USAGE_STRING);
 			return null;
 		}
@@ -50,7 +50,7 @@ public class ArgumentReader {
 			return null;
 		}
 
-		return new Arguments(apkPath, projectPath, resultPath, filtersPath);
+		return new Arguments(apkPath, decompiledProjectPath, filtersPath, resultPath);
 	}
 
 	private boolean checkFiles(String[] files) {

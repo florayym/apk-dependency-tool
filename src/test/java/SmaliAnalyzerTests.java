@@ -44,8 +44,8 @@ public class SmaliAnalyzerTests {
         String[] ignoredClasses = new String[] {
             ".*Dagger.*", ".*Injector.*", ".*\\$_ViewBinding$", ".*_Factory$"
         };
-        defaultFilters = new Filters(packageName, Filters.DEFAULT_PROCESS_INNER, 
-            ignoredClasses);
+        defaultFilters = new Filters(true, packageName, Filters.DEFAULT_PROCESS_INNER,
+            ignoredClasses); // FIXME two types of constructor functions
     }
 
     @After
@@ -59,7 +59,7 @@ public class SmaliAnalyzerTests {
      */
     @Test
     public void runPrintsIntroMessage() {
-        SmaliAnalyzer sut = new SmaliAnalyzer(defaultArguments, defaultFilters, null, null);
+        SmaliAnalyzer sut = new SmaliAnalyzer(defaultArguments, defaultFilters, null, null, null);
 
         sut.run();
 
@@ -75,8 +75,8 @@ public class SmaliAnalyzerTests {
     public void runPrintsMessageAndReturnsFalseIfProjectFolderIsAbsent() throws IOException {
         Arguments argsWihNonExistingPath = defaultArguments;
         File nonExisting = new File("non-existing");
-        argsWihNonExistingPath.setProjectPath(nonExisting.getAbsolutePath());
-        SmaliAnalyzer sut = new SmaliAnalyzer(argsWihNonExistingPath, defaultFilters, null, null);
+        argsWihNonExistingPath.setDecompiledProjectPath(nonExisting.getAbsolutePath());
+        SmaliAnalyzer sut = new SmaliAnalyzer(argsWihNonExistingPath, defaultFilters, null, null, null);
 
         boolean result = sut.run();
 
@@ -91,12 +91,12 @@ public class SmaliAnalyzerTests {
      */
     @Test
     public void runPrintsMessageAndReturnsFalseIfApkUsesInstantRun() throws IOException {
-        File project = new File(defaultArguments.getProjectPath());
+        File project = new File(defaultArguments.getDecompiledProjectPath());
         File unknown = new File(project, "unknown");
         unknown.mkdir();
         File unknownZip = new File(unknown, "instant-run.zip");
         unknownZip.createNewFile();
-        SmaliAnalyzer sut = new SmaliAnalyzer(defaultArguments, defaultFilters, null, null);
+        SmaliAnalyzer sut = new SmaliAnalyzer(defaultArguments, defaultFilters, null, null, null);
 
         boolean result = sut.run();
 
@@ -111,7 +111,7 @@ public class SmaliAnalyzerTests {
      */
     @Test
     public void runWithDefaultParamsReturnsTrue() {
-        SmaliAnalyzer sut = new SmaliAnalyzer(defaultArguments, defaultFilters, null, null);
+        SmaliAnalyzer sut = new SmaliAnalyzer(defaultArguments, defaultFilters, null, null, null);
 
         boolean result = sut.run();
 

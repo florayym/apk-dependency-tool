@@ -122,9 +122,9 @@ public class FiltersReaderTests {
         Filters filters = sut.read();
 
         assertThat(filters, notNullValue());
-        assertThat(filters.getPackageName(), equalTo("com.example.package"));
+        assertThat(filters.getPackageRange(), equalTo("com.example.package"));
         assertThat(filters.isProcessingInner(), is(false));
-        assertThat(filters.getIgnoredClasses(),
+        assertThat(filters.getIgnoredObjects(),
             equalTo(new String[] {".*Dagger.*", ".*Injector.*", ".*\\$_ViewBinding$", ".*_Factory$"}));
     }
 
@@ -146,9 +146,9 @@ public class FiltersReaderTests {
         Filters filters = sut.read();
 
         assertThat(filters, notNullValue());
-        assertThat(filters.getPackageName(), equalTo("com.example.package"));
+        assertThat(filters.getPackageRange(), equalTo("com.example.package"));
         assertThat(filters.isProcessingInner(), is(false));
-        assertThat(filters.getIgnoredClasses(), 
+        assertThat(filters.getIgnoredObjects(),
             equalTo(new String[] {".*Dagger.*", ".*Injector.*", ".*\\$_ViewBinding$", ".*_Factory$"}));
     }
 
@@ -171,9 +171,9 @@ public class FiltersReaderTests {
         Filters filters = sut.read();
 
         assertThat(filters, notNullValue());
-        assertThat(filters.getPackageName(), equalTo("com.example.package"));
+        assertThat(filters.getPackageRange(), equalTo("com.example.package"));
         assertThat(filters.isProcessingInner(), is(true));
-        assertThat(filters.getIgnoredClasses(), 
+        assertThat(filters.getIgnoredObjects(),
             equalTo(new String[] {".*Dagger.*", ".*Injector.*", ".*\\$_ViewBinding$", ".*_Factory$"}));
         String message = "Warning! Processing including inner classes.";
         assertThat(outContent.toString(), containsString(message));
@@ -197,9 +197,9 @@ public class FiltersReaderTests {
         Filters filters = sut.read();
 
         assertThat(filters, notNullValue());
-        assertThat(filters.getPackageName(), equalTo("com.example.package"));
+        assertThat(filters.getPackageRange(), equalTo("com.example.package"));
         assertThat(filters.isProcessingInner(), is(false));
-        assertThat(filters.getIgnoredClasses(), nullValue());
+        assertThat(filters.getIgnoredObjects(), nullValue());
         String message = "Warning! Processing without class filtering.";
         assertThat(outContent.toString(), containsString(message));
     }

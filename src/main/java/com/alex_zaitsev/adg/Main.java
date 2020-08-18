@@ -1,6 +1,5 @@
 package com.alex_zaitsev.adg;
 
-import com.alex_zaitsev.adg.FilterProvider;
 import com.alex_zaitsev.adg.decode.ApkSmaliDecoderController;
 import com.alex_zaitsev.adg.io.ArgumentReader;
 import com.alex_zaitsev.adg.io.Arguments;
@@ -22,7 +21,7 @@ public class Main {
             return;
         }
         if (arguments.getFiltersPath() == null) {
-            System.err.println("Please specify path to filter.json file.");
+            System.err.println("Please specify path to your filter.json file.");
             return;
         }
         // parse filters
@@ -32,20 +31,21 @@ public class Main {
         }
 
         // Delete the output directory for a better decoding result.
-        if (FileUtils.deleteDir(arguments.getProjectPath())) {
-            System.out.println("The output directory was deleted!");
+        if (FileUtils.deleteDir(arguments.getDecompiledProjectPath())) {
+            System.out.println("The old output directory has been deleted!");
         }
 
-        // Decode the APK file for smali code in the output directory.
+        // Decode the APK file for smali code in the output directory (-i ./decompiled-project).
         ApkSmaliDecoderController.decode(
-            arguments.getApkFilePath(), arguments.getProjectPath());
+            arguments.getApkFilePath(), arguments.getDecompiledProjectPath());
 
         // Analyze the decoded files and create the result file.
         FilterProvider filterProvider = new FilterProvider(filters);
         Filter<String> pathFilter = filterProvider.makePathFilter();
-        Filter<String> classFilter = filterProvider.makeClassFilter();
+        Filter<String > classPathFilter = filterProvider.makeClassPathFilter();
+        Filter<String> ignoredFilter = filterProvider.makeIgnoredFilter();
         SmaliAnalyzer analyzer = new SmaliAnalyzer(arguments, filters, 
-                                                   pathFilter, classFilter);
+                                                   pathFilter, classPathFilter, ignoredFilter);
 
         if (analyzer.run()) {
             File resultFile = new File(arguments.getResultPath());

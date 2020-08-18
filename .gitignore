@@ -5,15 +5,18 @@
 analyzed.js
 .DS_Store
 .idea
+.vscode
 META-INF
 build
-output
+decompiled-project
 test.*
 apk-dependency-graph-scripts-*.zip
 .ant
 .gradle
-# lib/ directory where the dependencies are downloaded by Ivy Apache.
-lib
+# libs/ directory where the dependencies are downloaded by Ivy Apache.
+libs
+apks
 filters/*.json
 !filters/default.json
-.vscode
+local.properties
+apk-dependency-graph.iml
